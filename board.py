@@ -1,9 +1,15 @@
+from copy import deepcopy
+
+
 class Board:
-    def __init__(self):
-        self.board = [
-            ['0', '0', '0'],
-            ['0', '0', '0'],
-            ['0', '0', '0']]
+    def __init__(self, board=None):
+        if board is None:
+            self.board = [
+                ['0', '0', '0'],
+                ['0', '0', '0'],
+                ['0', '0', '0']]
+        else:
+            self.board = board
 
     def change(self, row, col, side):
         if row <= 0 or row > len(self.board) or col <= 0 or col > len(self.board):
@@ -12,6 +18,17 @@ class Board:
             return False
         self.board[row-1][col-1] = side
         return True
+
+    def change_board(self, row, col, side):
+        board_copy = deepcopy(self.board)
+        if row <= 0 or row > len(self.board) or col <= 0 or col > len(self.board):
+            print('Out of bounds')
+            return False
+        elif self.board[row-1][col-1] in ('x', 'o'):
+            print('This place is taken')
+            return False
+        board_copy[row-1][col-1] = side
+        return board_copy
 
     def check_horizontal(self, side):
         for row in self.board:
@@ -63,7 +80,15 @@ class Board:
             return True
         return False
 
+    def get_available_moves(self):
+        moves = []
+        for m, row in enumerate(self.board):
+            for n, cell in enumerate(row):
+                if cell == '0':
+                    moves.append((m, n))
+        return moves
 # returns True is there is no empty space left
+
     def fill_check(self):
         return not any('0' in row for row in self.board)
 

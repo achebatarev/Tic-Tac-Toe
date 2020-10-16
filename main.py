@@ -1,4 +1,6 @@
 from board import Board
+from ai import ai_move
+import sys
 
 
 def main():
@@ -19,13 +21,7 @@ def main():
         if board.fill_check():
             print('We have a tie here')
             break
-        while(True):
-            m, n = map(int, input(
-                'Enter the position of o(row, column): ').split())
-            if (board.change(m, n, 'o')):
-                break
-            else:
-                print('Wrong input')
+        ai_move(board)
         print(board)
         if board.win('o'):
             print('The o has won')
@@ -36,4 +32,5 @@ def main():
 
 
 if __name__ == '__main__':
+    sys.setrecursionlimit(10**6)
     main()
